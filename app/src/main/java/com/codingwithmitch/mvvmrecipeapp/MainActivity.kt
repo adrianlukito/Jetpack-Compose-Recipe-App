@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(){
 
         setContent {
             Column(
-                    modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp)
             ) {
                 Text(text = "Hey look some text")
                 Spacer(modifier = Modifier.padding(top = 10.dp))
