@@ -23,11 +23,6 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.main_container, RecipeListFragment())
-                .commit()
-
 //         COLUMN VS ROW
 //         EXAMPLE INSERT 2 CHILDREN TEXT -> "ITEM1" & "ITEM2"
 //
