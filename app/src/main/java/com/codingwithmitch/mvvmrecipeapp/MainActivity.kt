@@ -1,6 +1,7 @@
 package com.codingwithmitch.mvvmrecipeapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -16,8 +17,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.codingwithmitch.mvvmrecipeapp.domain.model.Recipe
+import com.codingwithmitch.mvvmrecipeapp.network.RecipeService
 import com.codingwithmitch.mvvmrecipeapp.network.model.RecipeNetworkEntity
 import com.codingwithmitch.mvvmrecipeapp.network.model.RecipeNetworkMapper
+import com.google.gson.GsonBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity(){
 
@@ -26,109 +34,18 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val mapper = RecipeNetworkMapper()
-        val recipe = Recipe()
-        val networkEntity: RecipeNetworkEntity = mapper.mapToEntity(recipe)
-        val r = mapper.mapFromEntity(networkEntity)
+        val service = Retrofit.Builder()
+            .baseUrl("https://food2fork.ca/api/recipe/")
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .build()
+            .create(RecipeService::class.java)
 
-//         COLUMN VS ROW
-//         EXAMPLE INSERT 2 CHILDREN TEXT -> "ITEM1" & "ITEM2"
-//
-//         COLUMN RESULT EXAMPLE: -> COLUMN IS SIMILAR TO LINEARLAYOUT VERTICAL ORIENTATION
-//         ITEM1
-//         ITEM2
-//
-//         ROW RESULT EXAMPLE: -> ROW IS SIMILAR TO LINEARLAYOUT HORIZONTAL ORIENTATION
-//         ITEM1 ITEM2
-
-//        setContent {
-//            Column {
-//                Column(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(200.dp)
-//                        .border(border = BorderStroke(1.dp, Color.Black)),
-//                    verticalArrangement = Arrangement.Center
-//                ) {
-//                    Text(
-//                        text = "ITEM1",
-//                        modifier = Modifier.align(Alignment.CenterHorizontally)
-//                    )
-//                    Text(
-//                        text = "ITEM1",
-//                        modifier = Modifier.align(Alignment.CenterHorizontally)
-//                    )
-//                }
-//                Spacer(modifier = Modifier.padding(20.dp))
-//                Row(
-//                    modifier = Modifier
-//                        .width(200.dp)
-//                        .height(200.dp)
-//                        .border(border = BorderStroke(1.dp, Color.Black)),
-//                    horizontalArrangement = Arrangement.Center
-//                ) {
-//                    Text(
-//                        text = "ITEM2",
-//                        modifier = Modifier.align(Alignment.CenterVertically)
-//                    )
-//                    Text(
-//                        text = "ITEM2",
-//                        modifier = Modifier.align(Alignment.CenterVertically)
-//                    )
-//                }
-//            }
-//        }
-
-//        setContent {
-//            ScrollableColumn(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .fillMaxHeight()
-//                    .background(color = Color(0xFFF2F2F2))
-//            ) {
-//                Image(
-//                    bitmap = imageFromResource(res = resources, resId = R.drawable.happy_meal_small),
-//                    modifier = Modifier.height(300.dp),
-//                    contentScale = ContentScale.Crop,
-//                )
-//                Column(modifier = Modifier.padding(16.dp)) {
-//                    Row(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        horizontalArrangement = Arrangement.SpaceBetween
-//                    ) {
-//                        Text(
-//                            text = "Happy Meal",
-//                            style = TextStyle(
-//                                fontSize = TextUnit.Sp(26)
-//                            ),
-//                            modifier = Modifier.align(Alignment.CenterVertically)
-//                        )
-//                        Text(
-//                            text = "$5.99",
-//                            style = TextStyle(
-//                                color = Color(0xFF85bb65),
-//                                fontSize = TextUnit.Companion.Sp(17)
-//                            ),
-//                            modifier = Modifier.align(Alignment.CenterVertically)
-//                        )
-//                    }
-//
-//                    Spacer(modifier = Modifier.padding(top = 8.dp))
-//                    Text(
-//                        text = "800 calories",
-//                        style = TextStyle(
-//                            fontSize = TextUnit.Companion.Sp(17)
-//                        )
-//                    )
-//                    Spacer(modifier = Modifier.padding(top = 8.dp))
-//                    Button(
-//                        onClick = {},
-//                        modifier = Modifier.align(Alignment.CenterHorizontally)
-//                    ) {
-//                        Text(text = "ORDER NOW")
-//                    }
-//                }
-//            }
-//        }
+        CoroutineScope(IO).launch {
+            val recipe = service.get(
+                token = "Token 9c8b06d329136da358c2d00e76946b0111ce2c48",
+                id = 583
+            )
+            Log.d("lolo", "onCreate: ${recipe.title}")
+        }
     }
 }
