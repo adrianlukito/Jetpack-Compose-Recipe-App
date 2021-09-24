@@ -15,6 +15,9 @@ import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.codingwithmitch.mvvmrecipeapp.domain.model.Recipe
+import com.codingwithmitch.mvvmrecipeapp.network.model.RecipeNetworkEntity
+import com.codingwithmitch.mvvmrecipeapp.network.model.RecipeNetworkMapper
 
 class MainActivity : AppCompatActivity(){
 
@@ -22,6 +25,11 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val mapper = RecipeNetworkMapper()
+        val recipe = Recipe()
+        val networkEntity: RecipeNetworkEntity = mapper.mapToEntity(recipe)
+        val r = mapper.mapFromEntity(networkEntity)
 
 //         COLUMN VS ROW
 //         EXAMPLE INSERT 2 CHILDREN TEXT -> "ITEM1" & "ITEM2"
