@@ -51,6 +51,8 @@ class RecipeListFragment: Fragment() {
                 val recipes = viewModel.recipes.value
 
                 val query = viewModel.query.value
+
+                val selectedCategory = viewModel.selectedCategory.value
                 
                 Column {
                     Surface(
@@ -82,7 +84,7 @@ class RecipeListFragment: Fragment() {
                                     },
                                     onImeActionPerformed = { action, softKeyboardController ->
                                         if(action == ImeAction.Search) {
-                                            viewModel.search(query)
+                                            viewModel.search()
                                             softKeyboardController?.hideSoftwareKeyboard()
                                         }
                                     },
@@ -93,15 +95,18 @@ class RecipeListFragment: Fragment() {
                                 )
                             }
                             ScrollableRow(
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 8.dp, bottom = 8.dp)
                             ) {
                                 for(category in getAllFoodCategories()) {
                                     FoodCategoryChip(
                                         category = category.value,
-                                        onExecuteSearch = {
-                                            viewModel.onQueryChange(it)
-                                            viewModel.search(it)
-                                        }
+                                        isSelected = selectedCategory == category,
+                                        onSelectedCategory = {
+                                            viewModel.onSelectedCategoryChange(it)
+                                        },
+                                        onExecuteSearch = viewModel::search
                                     )
                                 }
                             }
