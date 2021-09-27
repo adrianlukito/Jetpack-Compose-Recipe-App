@@ -1,7 +1,7 @@
 package com.codingwithmitch.mvvmrecipeapp.di
 
 import android.content.Context
-import com.codingwithmitch.mvvmrecipeapp.BaseApplication
+import com.codingwithmitch.mvvmrecipeapp.presentation.BaseApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
