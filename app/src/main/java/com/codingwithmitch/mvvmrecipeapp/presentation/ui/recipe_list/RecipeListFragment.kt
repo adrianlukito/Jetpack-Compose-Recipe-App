@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.codingwithmitch.mvvmrecipeapp.R
+import com.codingwithmitch.mvvmrecipeapp.presentation.components.CircularIndeterminateProgressBar
 import com.codingwithmitch.mvvmrecipeapp.presentation.components.FoodCategoryChip
 import com.codingwithmitch.mvvmrecipeapp.presentation.components.RecipeCard
 import com.codingwithmitch.mvvmrecipeapp.presentation.components.SearchAppBar
@@ -55,21 +56,30 @@ class RecipeListFragment: Fragment() {
                 val query = viewModel.query.value
 
                 val selectedCategory = viewModel.selectedCategory.value
+
+                val categoryScrollPosition = viewModel.categoryScrollPosition
+
+                val loading = viewModel.loading.value
                 
                 Column {
                     SearchAppBar(
                         query = query,
                         onQueryChange = viewModel::onQueryChange,
                         onExecuteSeatch = viewModel::search,
-                        scrollPosition = viewModel.categoryScrollPosition,
+                        scrollPosition = categoryScrollPosition,
                         selectedCategory = selectedCategory,
                         onSelectedCategoryChange = viewModel::onSelectedCategoryChange,
                         onChangeCategoryScrollPosition = viewModel::onChangeCategoryScrollPosition
                     )
-                    LazyColumn {
-                        itemsIndexed(items = recipes) { index, recipe ->
-                            RecipeCard(recipe = recipe, onClick = {})
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        LazyColumn {
+                            itemsIndexed(items = recipes) { index, recipe ->
+                                RecipeCard(recipe = recipe, onClick = {})
+                            }
                         }
+                        CircularIndeterminateProgressBar(isDisplayed = loading)
                     }
                 }
             }
