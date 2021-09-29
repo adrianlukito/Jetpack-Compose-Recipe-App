@@ -27,10 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.codingwithmitch.mvvmrecipeapp.R
-import com.codingwithmitch.mvvmrecipeapp.presentation.components.CircularIndeterminateProgressBar
-import com.codingwithmitch.mvvmrecipeapp.presentation.components.FoodCategoryChip
-import com.codingwithmitch.mvvmrecipeapp.presentation.components.RecipeCard
-import com.codingwithmitch.mvvmrecipeapp.presentation.components.SearchAppBar
+import com.codingwithmitch.mvvmrecipeapp.presentation.components.*
 import com.codingwithmitch.mvvmrecipeapp.util.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -71,16 +68,17 @@ class RecipeListFragment: Fragment() {
                         onSelectedCategoryChange = viewModel::onSelectedCategoryChange,
                         onChangeCategoryScrollPosition = viewModel::onChangeCategoryScrollPosition
                     )
-                    Box(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        LazyColumn {
-                            itemsIndexed(items = recipes) { index, recipe ->
-                                RecipeCard(recipe = recipe, onClick = {})
-                            }
-                        }
-                        CircularIndeterminateProgressBar(isDisplayed = loading)
-                    }
+                    PulsingDemo()
+//                    Box(
+//                        modifier = Modifier.fillMaxSize()
+//                    ) {
+//                        LazyColumn {
+//                            itemsIndexed(items = recipes) { index, recipe ->
+//                                RecipeCard(recipe = recipe, onClick = {})
+//                            }
+//                        }
+//                        CircularIndeterminateProgressBar(isDisplayed = loading)
+//                    }
                 }
             }
         }
